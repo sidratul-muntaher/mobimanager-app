@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.iis.mobimanagercedp">
+
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
+    <permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission
+        android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
+
+
+    <permission android:name="android.permission.MANAGE_CA_CERTIFICATES" />
+
+    <application
+        android:name="com.iis.mobimanagercedp.application.DeviceManager"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <service
+            android:name="com.iis.mobimanagercedp.service.ForegroundServiceForScreenService"
+            android:enabled="true"
+            android:exported="true"/>
+        <service
+            android:name="com.iis.mobimanagercedp.service.ScreenOnService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name="com.iis.mobimanagercedp.service.ScreenOffService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="Android.intent.action.ScreenService" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.iis.mobimanagercedp.service.ForegroundService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
+
+        <provider
+            android:name="com.iis.mobimanagercedp.utils.GenericFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity android:name="com.iis.mobimanagercedp.activity.ImeiActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.iis.mobimanagercedp.ocr.OcrCaptureActivity"
+            android:label="Ocr scan"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name="com.iis.mobimanagercedp.activity.NotificationActivity"
+            android:theme="@style/AppTheme.sidebarSupportTheme" />
+        <activity
+            android:name="com.iis.mobimanagercedp.activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.iis.mobimanagercedp.activity.ChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
+        <receiver
+            android:name="com.iis.mobimanagercedp.receiver.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.iis.mobimanagercedp.receiver.AlarmManagerReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name="com.iis.mobimanagercedp.service.LocationJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="com.iis.mobimanagercedp.service.MDMStatusService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="com.iis.mobimanagercedp.service.DataUsageReportingService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="com.iis.mobimanagercedp.service.AppMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <!-- <action android:name="com.google.android.c2dm.intent.RECEIVE" /> -->
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.iis.mobimanagercedp.service.AppService"
+            android:enabled="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- <receiver -->
+        <!-- android:name=".receiver.AppBroadcastReceiver" -->
+        <!-- android:permission="com.google.android.c2dm.permission.SEND" > -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.android.c2dm.intent.RECEIVE" /> -->
+        <!-- &lt;!&ndash;<category android:name="com.test" />&ndash;&gt; -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <receiver
+            android:name="com.iis.mobimanagercedp.utils.DeviceAdminHelper"
+            android:description="@string/sample_device_admin_description"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_rules" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.iis.mobimanagercedp.receiver.AppBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
+    </application>
+
+</manifest>

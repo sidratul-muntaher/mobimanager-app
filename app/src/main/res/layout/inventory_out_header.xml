@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_marginTop="50dp"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rel_lay_profile"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/linlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/margin_20dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+<!--                    app:border_color="#d3d3d3"-->
+<!--                    app:border_width="2dp"-->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageView"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_user"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/txt_bpname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Md. Rajibul Anam"
+                        android:textColor="@color/deep_gray"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="@dimen/margin_10dp"
+                    android:background="@drawable/arrow_down"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view_sales_target1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#E9E9E9"
+                app:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="5dp"
+                card_view:cardElevation="3dp"
+                card_view:cardUseCompatPadding="true">
+
+
+
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_40dp"
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:textSize="16sp"
+                android:text="Insert device IMEI manually or scan from Barcode."
+                android:textColor="@color/deep_gray"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_scan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
+                android:paddingTop="@dimen/margin_10dp"
+                android:paddingBottom="@dimen/margin_10dp"
+                android:layout_gravity="center"
+                android:layout_below="@+id/lin_lay_login"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:textSize="14sp"
+                android:layout_marginTop="@dimen/margin_20dp"
+                android:background="@drawable/curv_login_button"
+                android:text="Input IMEI"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:visibility="gone"
+                android:id="@+id/btn_ocr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lin_lay_login"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:layout_marginTop="@dimen/margin_20dp"
+                android:background="@drawable/curv_login_button"
+                android:text="@string/ocrscan"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">MobiManager</string>
+    <string name="notifications_admin_channel_name">Global channel</string>
+    <string name="notifications_admin_channel_description">Notifications sent from the app admin</string>
+    <string name="address_text">ADDRESS : </string>
+    <string name="mobile_title">MOBILE : </string>
+    <string name="name_title">NAME : </string>
+    <string name="user_info">USER INFO</string>
+    <string name="device_info">DEVICE INFO</string>
+    <string name="imei_1">IMEI 1 : </string>
+    <string name="imei_2">IMEI 2 : </string>
+    <string name="device">Device : </string>
+    <string name="build_number">Build Number: </string>
+    <string name="device_id">Device ID : </string>
+    <string name="device_serial">Device Serial : </string>
+    <string name="ok_button">OK</string>
+
+    <string name="addimei">Please Insert IMEI</string>
+    <string name="autoscan">Auto Scan</string>
+
+    <string name="ocrscan">Ocr Scan</string>
+    <string name="storage_permission_is_encessary_to_wrote_event">Storage permission is necessary to write event</string>
+    <string name="permission_necessary">please allow this permission</string>
+
+    <string name="sample_device_admin_description">Grant permission for Device Admin</string>
+    <string name="profile_name">mdm_profile</string>
+</resources>
