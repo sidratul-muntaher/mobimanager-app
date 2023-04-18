@@ -15,6 +15,10 @@
   <androidx.arch.core/>
   <androidx.asynclayoutinflater/>
   <androidx.autofill/>
+  <androidx.baselineprofile/>
+  <androidx.baselineprofile.apptarget/>
+  <androidx.baselineprofile.consumer/>
+  <androidx.baselineprofile.producer/>
   <androidx.benchmark/>
   <androidx.biometric/>
   <androidx.browser/>
@@ -37,6 +41,7 @@
   <androidx.coordinatorlayout/>
   <androidx.core/>
   <androidx.core.uwb/>
+  <androidx.credentials/>
   <androidx.cursoradapter/>
   <androidx.customview/>
   <androidx.databinding/>
@@ -81,7 +86,12 @@
   <androidx.percentlayout/>
   <androidx.preference/>
   <androidx.print/>
+  <androidx.privacysandbox.ads/>
+  <androidx.privacysandbox.library/>
+  <androidx.privacysandbox.plugins/>
+  <androidx.privacysandbox.sdkruntime/>
   <androidx.privacysandbox.tools/>
+  <androidx.privacysandbox.ui/>
   <androidx.profileinstaller/>
   <androidx.recommendation/>
   <androidx.recyclerview/>
@@ -115,10 +125,12 @@
   <androidx.viewpager2/>
   <androidx.wear/>
   <androidx.wear.compose/>
+  <androidx.wear.protolayout/>
   <androidx.wear.tiles/>
   <androidx.wear.watchface/>
   <androidx.webkit/>
   <androidx.window/>
+  <androidx.window.extensions.core/>
   <androidx.work/>
   <com.android/>
   <com.android.application/>
@@ -164,6 +176,7 @@
   <com.android.tools.lint/>
   <com.android.tools.metalava/>
   <com.android.tools.pixelprobe/>
+  <com.android.tools.smali/>
   <com.android.tools.utp/>
   <com.android.volley/>
   <com.crashlytics.sdk.android/>
@@ -186,10 +199,13 @@
   <com.google.android.instantapps/>
   <com.google.android.instantapps.thirdpartycompat/>
   <com.google.android.libraries.car/>
+  <com.google.android.libraries.cloud.telco.subgraph/>
   <com.google.android.libraries.enterprise.amapi/>
   <com.google.android.libraries.healthdata/>
+  <com.google.android.libraries.identity.googleid/>
   <com.google.android.libraries.maps/>
   <com.google.android.libraries.mapsplatform.secrets-gradle-plugin/>
+  <com.google.android.libraries.navigation/>
   <com.google.android.libraries.places/>
   <com.google.android.libraries.play.games/>
   <com.google.android.livesharing/>
