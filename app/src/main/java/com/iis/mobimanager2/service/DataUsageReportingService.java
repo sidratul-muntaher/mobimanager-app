@@ -79,12 +79,12 @@ public class DataUsageReportingService extends JobService {
                 imeiOne = AppPreference.getImeiOne(getApplicationContext());
             } else {
 
-                imeiOne = tm.getDeviceId(1);
+                imeiOne = tm.getDeviceId(0);
             }
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 imeiTwo = AppPreference.getImeiTwo(getApplicationContext());
             } else {
-                imeiTwo = tm.getDeviceId(2);
+                imeiTwo = tm.getDeviceId(1);
             }
 
         }

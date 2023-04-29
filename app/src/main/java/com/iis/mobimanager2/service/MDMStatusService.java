@@ -42,8 +42,8 @@ public class MDMStatusService extends JobService {
                 imeiTwo = AppPreference.getImeiTwo(mContext);
                 Log.d("_mdm_", "MDMStatusService --> imeiOne : "+imeiOne+" imeiTwo : "+imeiTwo);
             } else{
-                imeiOne = tm.getDeviceId(1);
-                imeiTwo = tm.getDeviceId(2);
+                imeiOne = tm.getDeviceId(0);
+                imeiTwo = tm.getDeviceId(1);
 
                 Log.d("_mdm_", "MDMStatusService --> 2|  imeiOne : "+imeiOne+" imeiTwo : "+imeiTwo);
             }
@@ -72,6 +72,7 @@ public class MDMStatusService extends JobService {
                     if (TextUtils.isEmpty(imeiTwo)){
                         imeiTwo = imeiOne;
                     }
+                    Log.e("TAG", "doInBackground: ----- > " + imeiOne + " " + imeiTwo );
                     String timestamp = new Date().getTime() + "";
                     String STATUS_API = ApiConstants.getStatusInfoApi()+imeiOne+"/"+imeiTwo+"/online/"+timestamp;
                     Log.d("_https_", "Status api :"+STATUS_API);

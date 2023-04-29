@@ -99,6 +99,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
                 android:textSize="16sp"
+                android:gravity="center"
                 android:text="Insert device IMEI manually or scan from Barcode."
                 android:textColor="@color/deep_gray"
                 android:textStyle="bold" />

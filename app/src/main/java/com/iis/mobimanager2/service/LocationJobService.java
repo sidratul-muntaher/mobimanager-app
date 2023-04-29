@@ -65,8 +65,8 @@ public class LocationJobService extends JobService {
                 imeiTwo = AppPreference.getImeiTwo(mContext);
                 Log.d("_locJ_", "On Job service 1--> imeiOne :"+imeiOne+" imeiTwo :"+imeiTwo);
             } else{
-                imeiOne = tm.getDeviceId(1);
-                imeiTwo = tm.getDeviceId(2);
+                imeiOne = tm.getDeviceId(0);
+                imeiTwo = tm.getDeviceId(1);
 
                 Log.d("_locJ_", "On Job service 2--> imeiOne :"+imeiOne+" imeiTwo :"+imeiTwo);
             }

@@ -310,6 +310,7 @@ public class HomeFragment extends Fragment {
         imeiOne = AppPreference.getImeiOne(getContext());
         imeiTwo = AppPreference.getImeiTwo(getContext());
 
+        Log.e("TAG", "setIMEIValues: " + imeiOne + " " + imeiTwo );
         tvImeiOne.setText(imeiOne);
         tvImeiTwo.setText(imeiTwo);
         setInfoValues();

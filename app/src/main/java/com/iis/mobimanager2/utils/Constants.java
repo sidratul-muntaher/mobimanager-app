@@ -21,7 +21,7 @@ public class Constants {
     public static final int DATA_USES_JOB_INFO_ID = 1236;
     public static final int ALARM_REQUEST_CODE = 280192;
     public static final long SHOULD_ALARM_TIME_DIFFERENCE = 30; //minute
-    public static final long MINIMUM_DATA_GETTING_DIFFERENCE = 20; //minute
+    public static final long MINIMUM_DATA_GETTING_DIFFERENCE = 12; //minute
 
 
 

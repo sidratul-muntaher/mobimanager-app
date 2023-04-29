@@ -208,6 +208,7 @@ public class ImeiActivity extends AppCompatActivity {
                 TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
                 int simCount = telephonyManager.getPhoneCount();
 
+                Log.e("TAG", "onCreate: -------- in " );
                 if (simCount == 1) {
                     imeiOne = tm.getDeviceId(0);
                     imeiTwo = imeiOne;
@@ -221,7 +222,7 @@ public class ImeiActivity extends AppCompatActivity {
 
 
 
-                Log.e("allUser", simCount + "   setIMEIValues: " + imeiTwo + " " + imeiOne );
+                Log.e("allUser--", simCount + "   setIMEIValues: " + imeiTwo + " " + imeiOne );
 
 
                 /*if ((!imeiOne.isEmpty()) && (!imeiTwo.isEmpty())){
@@ -238,7 +239,8 @@ public class ImeiActivity extends AppCompatActivity {
                 }
             }
 
-        } else {
+        }
+        else {
             getPermissions();
 
 
@@ -512,10 +514,21 @@ public class ImeiActivity extends AppCompatActivity {
                     } else {
                         progressDialog.show();
 
-                        imeiOne = tm.getDeviceId(1);
+
+
+                        int simCount = tm.getPhoneCount();
+
+                        Log.e("TAG", "onCreate: -------- in " );
+                        if (simCount == 1) {
+                            imeiOne = tm.getDeviceId(0);
+                            imeiTwo = imeiOne;
+                        } else if (simCount == 2) {
+                            imeiOne = tm.getDeviceId(0);
+                            imeiTwo = tm.getDeviceId(1);
+                        }
                         //imeiTwo = tm.getDeviceId(2);
-                        imeiTwo = imeiOne;
-                        Log.d("allUser", "setIMEIValues: " + imeiTwo + " " + imeiOne);
+
+                        Log.d("allUser", simCount + " -> setIMEIValues: " + imeiTwo + " " + imeiOne);
 
 
 

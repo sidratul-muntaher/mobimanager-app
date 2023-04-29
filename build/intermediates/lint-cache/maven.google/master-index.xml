@@ -140,8 +140,10 @@
   <com.android.car.setupwizardlib/>
   <com.android.car.ui/>
   <com.android.databinding/>
+  <com.android.designcompose/>
   <com.android.dynamic-feature/>
   <com.android.fused-library/>
+  <com.android.identity/>
   <com.android.installreferrer/>
   <com.android.internal.settings/>
   <com.android.java.tools.build/>

@@ -429,8 +429,8 @@ public class AppMessagingService extends FirebaseMessagingService {
             imeiTwo = AppPreference.getImeiTwo(getApplicationContext());
         } else{
 
-            imeiOne = tm.getDeviceId(1);
-            imeiTwo = tm.getDeviceId(2);
+            imeiOne = tm.getDeviceId(0);
+            imeiTwo = tm.getDeviceId(1);
         }
         if (imeiOne == null && imeiOne.length()<1){
             imeiOne = "111111111111111";
@@ -454,8 +454,8 @@ public class AppMessagingService extends FirebaseMessagingService {
             imeiOne = AppPreference.getImeiOne(getApplicationContext());
             imeiTwo = AppPreference.getImeiTwo(getApplicationContext());
         } else{
-            imeiOne = tm.getDeviceId(1);
-            imeiTwo = tm.getDeviceId(2);
+            imeiOne = tm.getDeviceId(0);
+            imeiTwo = tm.getDeviceId(1);
         }
         if (imeiOne == null ){
             imeiOne = "111111111111111";
