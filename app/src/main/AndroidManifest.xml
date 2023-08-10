@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.iis.mobimanager2">
+    package="com.iis.mobimanagercedp">
 
     <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
@@ -41,7 +41,7 @@
     <permission android:name="android.permission.MANAGE_CA_CERTIFICATES" />
 
     <application
-        android:name="com.iis.mobimanager2.application.DeviceManager"
+        android:name="com.iis.mobimanagercedp.application.DeviceManager"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -51,16 +51,19 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <receiver android:name=".REc"/>
+        <receiver android:name=".LocX"/>
         <service
-            android:name="com.iis.mobimanager2.service.ForegroundServiceForScreenService"
+            android:name="com.iis.mobimanagercedp.service.ForegroundServiceForScreenService"
             android:enabled="true"
             android:exported="true"/>
         <service
-            android:name="com.iis.mobimanager2.service.ScreenOnService"
+            android:name="com.iis.mobimanagercedp.service.ScreenOnService"
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name="com.iis.mobimanager2.service.ScreenOffService"
+            android:name="com.iis.mobimanagercedp.service.ScreenOffService"
             android:exported="false">
             <intent-filter>
                 <action android:name="Android.intent.action.ScreenService" />
@@ -69,7 +72,7 @@
             </intent-filter>
         </service>
         <service
-            android:name="com.iis.mobimanager2.service.ForegroundService"
+            android:name="com.iis.mobimanagercedp.service.ForegroundService"
             android:enabled="true"
             android:exported="true" />
 
@@ -78,7 +81,7 @@
             android:value="barcode" />
 
         <provider
-            android:name="com.iis.mobimanager2.utils.GenericFileProvider"
+            android:name="com.iis.mobimanagercedp.utils.GenericFileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -91,33 +94,33 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name="com.iis.mobimanager2.activity.ImeiActivity">
+        <activity android:name="com.iis.mobimanagercedp.activity.ImeiActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.iis.mobimanager2.ocr.OcrCaptureActivity"
+        <activity android:name="com.iis.mobimanagercedp.ocr.OcrCaptureActivity"
             android:label="Ocr scan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name="com.iis.mobimanager2.activity.NotificationActivity"
+            android:name="com.iis.mobimanagercedp.activity.NotificationActivity"
             android:theme="@style/AppTheme.sidebarSupportTheme" />
         <activity
-            android:name="com.iis.mobimanager2.activity.MainActivity"
+            android:name="com.iis.mobimanagercedp.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.iis.mobimanager2.activity.ChatActivity"
+            android:name="com.iis.mobimanagercedp.activity.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
 
         <receiver
-            android:name="com.iis.mobimanager2.receiver.BootReceiver"
+            android:name="com.iis.mobimanagercedp.receiver.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -125,21 +128,21 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.iis.mobimanager2.receiver.AlarmManagerReceiver"
+            android:name="com.iis.mobimanagercedp.receiver.AlarmManagerReceiver"
             android:enabled="true"
             android:exported="true" />
 
         <service
-            android:name="com.iis.mobimanager2.service.LocationJobService"
+            android:name="com.iis.mobimanagercedp.service.LocationJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="com.iis.mobimanager2.service.MDMStatusService"
+            android:name="com.iis.mobimanagercedp.service.MDMStatusService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="com.iis.mobimanager2.service.DataUsageReportingService"
+            android:name="com.iis.mobimanagercedp.service.DataUsageReportingService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="com.iis.mobimanager2.service.AppMessagingService"
+            android:name="com.iis.mobimanagercedp.service.AppMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -147,7 +150,7 @@
             </intent-filter>
         </service>
         <service
-            android:name="com.iis.mobimanager2.service.AppService"
+            android:name="com.iis.mobimanagercedp.service.AppService"
             android:enabled="true"
             android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- <receiver -->
         <!-- android:name=".receiver.AppBroadcastReceiver" -->
@@ -158,7 +161,7 @@
         <!-- </intent-filter> -->
         <!-- </receiver> -->
         <receiver
-            android:name="com.iis.mobimanager2.utils.DeviceAdminHelper"
+            android:name="com.iis.mobimanagercedp.utils.DeviceAdminHelper"
             android:description="@string/sample_device_admin_description"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -172,7 +175,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.iis.mobimanager2.receiver.AppBroadcastReceiver"
+            android:name="com.iis.mobimanagercedp.receiver.AppBroadcastReceiver"
             android:enabled="true"
             android:exported="true" />
     </application>

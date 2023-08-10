@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.iis.mobimanager2.ocr.camera.CameraSourcePreview
+        <com.iis.mobimanagercedp.ocr.camera.CameraSourcePreview
             android:id="@+id/preview"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -35,12 +35,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.iis.mobimanager2.ocr.camera.GraphicOverlay
+            <com.iis.mobimanagercedp.ocr.camera.GraphicOverlay
                 android:id="@+id/graphicOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-        </com.iis.mobimanager2.ocr.camera.CameraSourcePreview>
+        </com.iis.mobimanagercedp.ocr.camera.CameraSourcePreview>
 
         <Button
             android:visibility="gone"
