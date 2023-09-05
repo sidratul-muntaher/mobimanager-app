@@ -112,13 +112,13 @@ public class AppService extends Service {
         timestamp_1 = new Timestamp(System.currentTimeMillis());
         sessionManager = new SessionManager(mContext);
         timestamp_2 = new Timestamp(sessionManager.getLastGetDataTimeInMillis());
-        //if (Constants.compareTwoTimeStamps(timestamp_1, timestamp_2) > Constants.MINIMUM_DATA_GETTING_DIFFERENCE) {
+        if (Constants.compareTwoTimeStamps(timestamp_1, timestamp_2) > Constants.MINIMUM_DATA_GETTING_DIFFERENCE) {
             Log.d("_mdm_service_", "AppService --> service called");
 
             sessionManager.setGetDataAt(Calendar.getInstance().getTimeInMillis());
 
             schedulingJob(mContext);
-      //  }
+        }
         return START_NOT_STICKY;
     }
 

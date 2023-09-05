@@ -61,15 +61,15 @@ public class LocationJobService extends JobService {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 imeiOne = AppPreference.getImeiOne(mContext);
                 imeiTwo = AppPreference.getImeiTwo(mContext);
-                Log.d("_locJ_", "On Job service 1--> imeiOne :"+imeiOne+" imeiTwo :"+imeiTwo);
-            } else{
+                Log.d("_locJ_", "On Job service 1--> imeiOne :" + imeiOne + " imeiTwo :" + imeiTwo);
+            } else {
                 imeiOne = tm.getDeviceId(0);
                 imeiTwo = tm.getDeviceId(1);
 
-                Log.d("_locJ_", "On Job service 2--> imeiOne :"+imeiOne+" imeiTwo :"+imeiTwo);
+                Log.d("_locJ_", "On Job service 2--> imeiOne :" + imeiOne + " imeiTwo :" + imeiTwo);
             }
 
 
@@ -97,39 +97,37 @@ public class LocationJobService extends JobService {
                     String address = getAddressByLocation(location, mContext);
 
 //                    Log.d("_mdm_", "timestamp : "+timestamp);
-                    Log.d("_locJ_", "timestampToTime : "+newTime.toString());
+                    Log.d("_locJ_", "timestampToTime : " + newTime.toString());
                     if (imeiOne.length() > 5) {
 
                         Location location1 = new Location("");
 
                         ArrayList<HashMap<String, String>> locationDataList = appDatabaseHelper.getSendLocationData();
 
-                        if (locationDataList.size() > 0){
+                        if (locationDataList.size() > 0) {
 
-                            location1.setLongitude(Double.parseDouble(locationDataList.get(locationDataList.size() -1 ).get("longitude")));
-                            location1.setLatitude(Double.parseDouble(locationDataList.get(locationDataList.size() -1 ).get("latitude")));
+                            location1.setLongitude(Double.parseDouble(locationDataList.get(locationDataList.size() - 1).get("longitude")));
+                            location1.setLatitude(Double.parseDouble(locationDataList.get(locationDataList.size() - 1).get("latitude")));
 
                             Log.e("TAG", "gotLocation: --fmdsmf---- " + location1.distanceTo(location));
 
-                            if (location1.distanceTo(location) > 100){
-                                Log.e("TAG", "gotLocation: ----------- insert "  );
+                            if (location1.distanceTo(location) > 100) {
+                                Log.e("TAG", "gotLocation: ----------- insert ");
                                 appDatabaseHelper.insertSendLocationData(imeiOne, imeiTwo, location.getLatitude() + "", location.getLongitude() + "", address, Constants.getCurrentDataTimeString());
                             }
-                        }else{
-                            Log.e("TAG", "gotLocation: ---000-------- insert "  );
+                        } else {
+                            Log.e("TAG", "gotLocation: ---000-------- insert ");
 
                             appDatabaseHelper.insertSendLocationData(imeiOne, imeiTwo, location.getLatitude() + "", location.getLongitude() + "", address, Constants.getCurrentDataTimeString());
                         }
 
                         for (int i = 0; i < locationDataList.size(); i++) {
 
-                            Log.e("TAG", "gotLocation: -------- >  " + locationDataList.get(i) );
+                            Log.e("TAG", "gotLocation: -------- >  " + locationDataList.get(i));
                         }
 
 
-
-
-                        Log.e("TAG", appDatabaseHelper.getSendLocationData().size() + " gotLocation: ------------------------------ " + locationDataList.size() );
+                        Log.e("TAG", appDatabaseHelper.getSendLocationData().size() + " gotLocation: ------------------------------ " + locationDataList.size());
                     }
                     new AsyncTaskRunner().execute();
                 } else {
@@ -139,7 +137,7 @@ public class LocationJobService extends JobService {
                     String date = Constants.getTodayDateString();
                     String timestamp = new Date().getTime() + "";
 //                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                    Log.d("_locJ_", "timestamp : "+timestamp);
+                    Log.d("_locJ_", "timestamp : " + timestamp);
 //                    Log.d("_mdm_", "timestampToTime : "+timestamp.getTime());
                     if (imeiOne.length() > 5) {
 
@@ -155,9 +153,9 @@ public class LocationJobService extends JobService {
 
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return true;
-        }else {
+        } else {
 
-            Log.e("TAG", "onStartJob:  looooooocation" );
+            Log.e("TAG", "onStartJob:  looooooocation");
             myLocation.getLocation(getApplicationContext(), locationResult);
         }
 
@@ -221,39 +219,43 @@ public class LocationJobService extends JobService {
 
                     SharedPreferences sharedPreferences = getSharedPreferences("loc", Context.MODE_PRIVATE);
 
-                    if (jsonArray.length() > 0){
-                        Log.v("_httpss_", "SendLocationData -->> json-array:"+jsonArray.toString());
+                    if (jsonArray.length() > 0) {
+                        Log.e("_httpss_", "SendLocationData -->> json-array:" + jsonArray.toString());
                         String LOCATION_API = ApiConstants.getSaveLocationApi();
                         HttpsVolleyMethods httpsVolleyMethods = new HttpsVolleyMethods();
 
-                        if (locationDataList.get(locationDataList.size() - 1 ).toString().equals(sharedPreferences.getString("id", ""))){
+                        Log.e("TAG", locationDataList.get(locationDataList.size() - 1).toString().equals(sharedPreferences.getString("id", "")) + " doInBackground: " +locationDataList.size() );
+                        if (!locationDataList.get(locationDataList.size() - 1).toString().equals(sharedPreferences.getString("id", "")) || sharedPreferences.getString("id", "").equals("")) {
 
+                            Log.e("TAG", "doInBackground: relm"  );
 
-                        httpsVolleyMethods.httpsSendLocationPostRequest(mContext, LOCATION_API, jsonArray.toString(), new HttpsVolleyCallback() {
-                            @Override
-                            public void success(String response) {
+                            httpsVolleyMethods.httpsSendLocationPostRequest(mContext, LOCATION_API, jsonArray.toString(), new HttpsVolleyCallback() {
+                                @Override
+                                public void success(String response) {
 
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response);
+                                    Log.e("TAG", "success: " + response);
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
 
-                                    long statusCode = jsonObject.getLong("statusCode");
-                                    if (statusCode == 200  || statusCode == 201){
-                                        SharedPreferences preferences = getApplicationContext().getSharedPreferences("loc", Context.MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = preferences.edit();
+                                        long statusCode = jsonObject.getLong("statusCode");
+                                        if (statusCode == 200 || statusCode == 201) {
+                                            SharedPreferences preferences = getApplicationContext().getSharedPreferences("loc", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = preferences.edit();
 
-                                        if (locationDataList.size() > 0){
-                                            editor.putString("id", locationDataList.get(locationDataList.size() - 1).toString());
-                                            editor.apply();
+                                            if (locationDataList.size() > 0) {
+                                                editor.putString("id", locationDataList.get(locationDataList.size() - 1).toString());
+                                                editor.apply();
+                                            }
+                                            databaseHelper.deleteAllRowsExceptLast();
                                         }
-                                        databaseHelper.deleteAllRowsExceptLast();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+
+                                    Log.d("_https_", "location response :" + response);
                                 }
 
-                                Log.d("_https_", "location response :"+response);
-                            }
-                        });
+                            });
 //                        sendLocationDataToServer(getApplicationContext(), jsonArray.toString());
                         }
                     }
@@ -358,9 +360,9 @@ public class LocationJobService extends JobService {
                 return serialNumber;
             }
             serialNumber = Build.getSerial();
-        } else if (android.os.Build.VERSION.SDK_INT < 26){
+        } else if (android.os.Build.VERSION.SDK_INT < 26) {
             serialNumber = Build.SERIAL;
-        }else {
+        } else {
             serialNumber = "111111";
         }
 
@@ -478,7 +480,7 @@ public class LocationJobService extends JobService {
 //                    Log.v("_sf", "address : " + address + "\n city: " + city + " state: " + state + " country: " + country + " knownName: " + knownName);
 
                     locationAddress = address;
-                    Log.d("_mdm_", "Location address: "+address);
+                    Log.d("_mdm_", "Location address: " + address);
 
                 } else {
                     Log.d("_mdm_", "Location address not found, Try again");
