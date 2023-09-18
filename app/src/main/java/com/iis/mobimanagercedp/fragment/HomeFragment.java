@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,10 +29,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.iis.mobimanagercedp.IApi;
 import com.iis.mobimanagercedp.R;
+import com.iis.mobimanagercedp.adapter.AppListRecycler;
 import com.iis.mobimanagercedp.data.AppDatabaseHelper;
 import com.iis.mobimanagercedp.data.HttpsVolleyCallback;
 import com.iis.mobimanagercedp.data.HttpsVolleyMethods;
+import com.iis.mobimanagercedp.model.AppList;
+import com.iis.mobimanagercedp.model.X;
 import com.iis.mobimanagercedp.receiver.AlarmManagerReceiver;
 import com.iis.mobimanagercedp.service.AppService;
 import com.iis.mobimanagercedp.utils.ApiConstants;
@@ -44,9 +50,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import com.iis.mobimanagercedp.utils.AppPreference;
+import com.iis.mobimanagercedp.utils.FileDownloadTask;
 import com.iis.mobimanagercedp.utils.SessionManager;
 
 import static android.app.admin.DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE;
@@ -54,6 +62,12 @@ import static android.app.admin.DevicePolicyManager.EXTRA_DEVICE_ADMIN;
 import static android.app.admin.DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME;
 import static android.app.admin.DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME;
 import static com.iis.mobimanagercedp.utils.Constants.getTodayDateString;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
@@ -77,7 +91,10 @@ public class HomeFragment extends Fragment {
     TextView tvAddress;
     SharedPreferences preferences;
     ImageView imageView;
-
+    RecyclerView appList;
+    ArrayList<AppList> appLists;
+    AppListRecycler adapter;
+    AppDatabaseHelper databaseHelper;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -91,10 +108,19 @@ public class HomeFragment extends Fragment {
         tvMobile = view.findViewById(R.id.tvMobile);
         tvAddress = view.findViewById(R.id.tvAddress);
         imageView = view.findViewById(R.id.imageContact);
+        appList = view.findViewById(R.id.appList);
 
         Context mContext = getContext();
         preferences = mContext.getSharedPreferences(Constants.APP_PREFERENCE, Context.MODE_PRIVATE);
 
+        databaseHelper = new AppDatabaseHelper(getContext());
+         appLists = new ArrayList<>();
+
+         adapter = new AppListRecycler(appLists);
+        appList.setLayoutManager(new LinearLayoutManager(getContext()));
+        appList.setAdapter(adapter);
+
+        startDownloads();
         // check all permision
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_PHONE_STATE)
@@ -169,6 +195,103 @@ public class HomeFragment extends Fragment {
 
 
         return view;
+    }
+    private void startDownloads() {
+        // Replace these URLs with the actual file URLs you want to download
+        String[] fileUrls = {
+                "http://www.quran.gov.bd/quran/pdf/abe/fabe.pdf",
+                "https://r-static-assets.androidapks.com/rdata/c995e8e1482299345aabe7c626ae51bc/cn.xiaofengkj.fitpro_v2.3.4-125_Android-6.0.apk",
+                "https://d.apkpure.com/b/APK/com.delivery.india.client?version=latest"
+        };
+
+
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ApiConstants.BASE_HTTPS_URL).addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        IApi api = retrofit.create(IApi.class);
+        Call<X> call = api.getAppData();
+        call.enqueue(new Callback<X>() {
+            @Override
+            public void onResponse(Call<X> call, Response<X> response) {
+                Log.e("TAG", "onResponse: " + response.toString());
+                for (AppList a: response.body().getAppLists()
+                     ) {
+
+                    Log.e("TAG", "onResponse: " + a.appDownloadUrl );
+                    AppList item = new AppList(a.getAppDownloadUrl());
+                    item.setPackageName(a.getPackageName());
+                    item.setAppIcon(a.getAppIcon());
+                    item.setAppName(a.getAppName());
+                    item.setMinVersion(a.getMinVersion());
+
+                    databaseHelper.insertAppData(a.getAppName(), a.getPackageName(), a.getMinVersion(), a.getAppIcon(), a.getAppDownloadUrl());
+                    appLists.add(item);
+                    adapter.notifyDataSetChanged();
+                    String value = (a.getPackageName() + " - " + a.getMinVersion());
+                    if (!preferences.getString(a.getPackageName(), "").equals(value)){
+
+                        for (String fileUrl : fileUrls) {
+
+
+                            FileDownloadTask downloadTask = new FileDownloadTask(new FileDownloadTask.DownloadCallback() {
+                                @Override
+                                public void onProgressUpdate(int progress) {
+                                    item.setStatus("Status: downloading " + String.valueOf(progress) + "%");
+                                    adapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onDownloadComplete() {
+                                    item.setStatus("downloaded");
+                                    adapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onDownloadFailed() {
+                                    item.setStatus("failed");
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+
+                            Log.e("TAG", "startyDownloads: " + getContext().getFilesDir().getAbsolutePath() );
+                            downloadTask.execute(fileUrl, getContext().getFilesDir().getAbsolutePath() + "/" + item.getAppName() + ".apk");
+                        }
+
+                    }else{
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<X> call, Throwable t) {
+
+                Log.e("TAG", "onFailure: yuy" + t.toString() );
+            }
+        });
+
+        for (AppList a: databaseHelper.getApplist()
+        ) {
+            for (AppList b: adapter.getAppLists()
+                 ) {
+                if (!a.getPackageName().equals(b.getPackageName())){
+                    appLists.add(a);
+                }
+            }
+
+        }
+
+        Map<String, ?> allEntries = preferences.getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
+
+            if (entry.getKey().contains("com")){
+
+            }
+        }
+
     }
 
 

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.iis.mobimanagercedp.model.AppList;
 import com.iis.mobimanagercedp.model.Message;
 import com.iis.mobimanagercedp.model.NotificationFile;
 
@@ -23,6 +24,14 @@ public class AppDatabaseHelper extends SQLiteOpenHelper {
 
 
     // COLUMN NAMES OF locations TABLE
+
+    public static final String TABLE_APP = "TABLE_APP";
+    public static final String TABLE_APP_NAME = "TABLE_APP_NAME";
+    public static final String TABLE_APP_VERSION = "TABLE_APP_VERSION";
+    public static final String TABLE_APP_PKG = "TABLE_APP_PKG";
+    public static final String TABLE_APP_ICON = "TABLE_APP_ICON";
+    public static final String TABLE_APP_URL = "TABLE_APP_URL";
+
 
     public static final String TABLE_SEND_LOCATION = "locations";
     public static final String TABLE_SEND_USES_DATA = "usesData";
@@ -50,6 +59,16 @@ public class AppDatabaseHelper extends SQLiteOpenHelper {
                     "longitude TEXT," +
                     "dateTime TEXT," +
                     "address TEXT" +
+                    ");");
+
+            db.execSQL("CREATE TABLE if not exists " + TABLE_APP + "(" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    TABLE_APP_NAME + " TEXT," +
+
+                    TABLE_APP_ICON + " TEXT," +
+                    TABLE_APP_PKG + " TEXT," +
+                    TABLE_APP_VERSION + " TEXT," +
+                    TABLE_APP_URL + " TEXT" +
                     ");");
 
             db.execSQL("CREATE TABLE if not exists " + TABLE_SEND_USES_DATA + "(" +
@@ -90,7 +109,7 @@ public class AppDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        if(newVersion > 1 && newVersion < 4) {
+        if (newVersion > 1 && newVersion < 4) {
             try {
                 db.execSQL("CREATE TABLE if not exists " + TABLE_SEND_USES_DATA + "(" +
                         "imei_one TEXT," +
@@ -99,16 +118,17 @@ public class AppDatabaseHelper extends SQLiteOpenHelper {
                         "wifi_data TEXT," +
                         "date TEXT" +
                         ");");
-            }catch (SQLiteException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
                 Log.e("Table creation error", "onUpgrade error");
             }
         }
 
-        if(newVersion > 2) {
+        if (newVersion > 2) {
             try {
                 db.execSQL("DROP TABLE if exists " + TABLE_SEND_LOCATION);
-            }catch (SQLiteException e) {
+                db.execSQL("DROP TABLE if exists " + TABLE_APP);
+            } catch (SQLiteException e) {
                 e.printStackTrace();
                 Log.e("Table dropping error", "onUpgrade error");
             }
@@ -117,7 +137,7 @@ public class AppDatabaseHelper extends SQLiteOpenHelper {
         if (newVersion > 3) {
             try {
                 db.execSQL("DROP TABLE if exists " + TABLE_SEND_USES_DATA);
-            }catch (SQLiteException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
                 Log.e("Table dropping error", "onUpgrade error");
             }
@@ -142,6 +162,60 @@ public class AppDatabaseHelper extends SQLiteOpenHelper {
 
 
         return true;
+    }
+
+    public void insertAppData(String name, String pkg, String version, String icon, String url) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TABLE_APP_ICON, icon);
+        contentValues.put(TABLE_APP_PKG, pkg);
+        contentValues.put(TABLE_APP_URL, url);
+        contentValues.put(TABLE_APP_NAME, name);
+        contentValues.put(TABLE_APP_VERSION, version);
+        db.insertWithOnConflict(TABLE_APP, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    public ArrayList<AppList> getApplist() {
+
+        ArrayList<AppList> appLists = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from " + TABLE_APP, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(cursor.getColumnIndex(TABLE_APP_NAME));
+                String version = cursor.getString(cursor.getColumnIndex(TABLE_APP_VERSION));
+                String pkg = cursor.getString(cursor.getColumnIndex(TABLE_APP_PKG));
+                String url = cursor.getString(cursor.getColumnIndex(TABLE_APP_URL));
+                String icon = cursor.getString(cursor.getColumnIndex(TABLE_APP_ICON));
+
+                AppList dataModel = new AppList();
+
+                dataModel.setMinVersion(version);
+                dataModel.setAppName(name);
+                dataModel.setPackageName(pkg);
+                dataModel.setAppDownloadUrl(url);
+                dataModel.setAppIcon(icon);
+
+                appLists.add(dataModel);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return appLists;
+    }
+
+    public void updateAppData(String name, String pkg, String version, String icon, String url) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TABLE_APP_ICON, icon);
+        contentValues.put(TABLE_APP_PKG, pkg);
+        contentValues.put(TABLE_APP_URL, url);
+        contentValues.put(TABLE_APP_NAME, name);
+        contentValues.put(TABLE_APP_VERSION, version);
+        db.update(TABLE_APP, contentValues, TABLE_APP_PKG + "=?", new String[]{pkg});
     }
 
     public boolean insertSendUsesData(String imeiOne, String imeiTwo, String mobile_data,
@@ -239,10 +313,10 @@ public class AppDatabaseHelper extends SQLiteOpenHelper {
     // get data from send_sendUsesData table
     public boolean isDataAvailable(String date) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from " + TABLE_SEND_USES_DATA +" where date = '"+ date+ "'", null);
+        Cursor res = db.rawQuery("select * from " + TABLE_SEND_USES_DATA + " where date = '" + date + "'", null);
         res.moveToFirst();
 
-        if (res.moveToFirst()){
+        if (res.moveToFirst()) {
             return true;
         }
 
@@ -287,28 +361,32 @@ public class AppDatabaseHelper extends SQLiteOpenHelper {
         // Delete rows except the last one
         int x = db.delete(TABLE_SEND_LOCATION, COLUMN_ID + " < ?", new String[]{String.valueOf(lastRowId)});
 
-        Log.e("TAG", "deleteAllRowsExceptLast: "  + x );
+        Log.e("TAG", "deleteAllRowsExceptLast: " + x);
         db.close();
     }
+
     public boolean deleteAllDataFromLocationTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + TABLE_SEND_LOCATION);
         return true;
     }
+
     public boolean deleteAllDataFromUsesDataTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + TABLE_SEND_USES_DATA);
         return true;
     }
+
     public boolean deleteAllDataFromUsesDataTableExceptToday(String today_date) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from " + TABLE_SEND_USES_DATA + " where date !='"+today_date+"'");
+        db.execSQL("delete from " + TABLE_SEND_USES_DATA + " where date !='" + today_date + "'");
         return true;
     }
-    public boolean deleteNotificationFiles(String fileName, String fileType){
-        Log.d("_mdm_firebase", "deleteNotificationFiles: "+ fileName+"."+fileType);
+
+    public boolean deleteNotificationFiles(String fileName, String fileType) {
+        Log.d("_mdm_firebase", "deleteNotificationFiles: " + fileName + "." + fileType);
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from " + TABLE_FILE + " where file_name ='"+fileName+"' and type = '"+fileType+"'");
+        db.execSQL("delete from " + TABLE_FILE + " where file_name ='" + fileName + "' and type = '" + fileType + "'");
         return true;
 
 
@@ -353,14 +431,15 @@ public class AppDatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_FILE, cv, "file_id=" + fileId, null);
         return false;
     }
-    public boolean updateUsesData(String mobile_data, String wifi , String date) {
-        Log.d("_database_", "mobile_data :"+mobile_data+" wifi :"+wifi+" date :"+date);
+
+    public boolean updateUsesData(String mobile_data, String wifi, String date) {
+        Log.d("_database_", "mobile_data :" + mobile_data + " wifi :" + wifi + " date :" + date);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("mobile_data", mobile_data);
         cv.put("wifi_data", wifi);
 
-        db.update(TABLE_SEND_USES_DATA, cv, "date = ?", new String[] {date});
+        db.update(TABLE_SEND_USES_DATA, cv, "date = ?", new String[]{date});
         return false;
     }
 }
