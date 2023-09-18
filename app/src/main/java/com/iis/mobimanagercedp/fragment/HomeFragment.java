@@ -63,6 +63,10 @@ import static android.app.admin.DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_AD
 import static android.app.admin.DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME;
 import static com.iis.mobimanagercedp.utils.Constants.getTodayDateString;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -205,8 +209,18 @@ public class HomeFragment extends Fragment {
         };
 
 
+        OkHttpClient.Builder client = new OkHttpClient().newBuilder();
+        client.hostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+        OkHttpClient c = client.build();
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(ApiConstants.BASE_HTTPS_URL).addConverterFactory(GsonConverterFactory.create())
+
+        Retrofit retrofit = new Retrofit.Builder().
+                baseUrl(ApiConstants.BASE_HTTPS_URL).client(c).addConverterFactory(GsonConverterFactory.create())
                 .build();
 
 
