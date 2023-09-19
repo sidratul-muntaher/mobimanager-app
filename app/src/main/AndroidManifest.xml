@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.iis.mobimanagercocacola">
+    package="com.iis.mobimanagercocacolaoffline">
 
     <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
@@ -42,7 +42,7 @@
     <permission android:name="android.permission.MANAGE_CA_CERTIFICATES" />
 
     <application
-        android:name="com.iis.mobimanagercocacola.application.DeviceManager"
+        android:name="com.iis.mobimanagercocacolaoffline.application.DeviceManager"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -53,18 +53,18 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <receiver android:name="com.iis.mobimanagercocacola.REc"/>
-        <receiver android:name="com.iis.mobimanagercocacola.LocX"/>
+        <receiver android:name="com.iis.mobimanagercocacolaoffline.REc"/>
+        <receiver android:name="com.iis.mobimanagercocacolaoffline.LocX"/>
         <service
-            android:name="com.iis.mobimanagercocacola.service.ForegroundServiceForScreenService"
+            android:name="com.iis.mobimanagercocacolaoffline.service.ForegroundServiceForScreenService"
             android:enabled="true"
             android:exported="true"/>
         <service
-            android:name="com.iis.mobimanagercocacola.service.ScreenOnService"
+            android:name="com.iis.mobimanagercocacolaoffline.service.ScreenOnService"
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name="com.iis.mobimanagercocacola.service.ScreenOffService"
+            android:name="com.iis.mobimanagercocacolaoffline.service.ScreenOffService"
             android:exported="false">
             <intent-filter>
                 <action android:name="Android.intent.action.ScreenService" />
@@ -73,7 +73,7 @@
             </intent-filter>
         </service>
         <service
-            android:name="com.iis.mobimanagercocacola.service.ForegroundService"
+            android:name="com.iis.mobimanagercocacolaoffline.service.ForegroundService"
             android:enabled="true"
             android:exported="true" />
 
@@ -82,7 +82,7 @@
             android:value="barcode" />
 
         <provider
-            android:name="com.iis.mobimanagercocacola.utils.GenericFileProvider"
+            android:name="com.iis.mobimanagercocacolaoffline.utils.GenericFileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -105,33 +105,33 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name="com.iis.mobimanagercocacola.activity.ImeiActivity">
+        <activity android:name="com.iis.mobimanagercocacolaoffline.activity.ImeiActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.iis.mobimanagercocacola.ocr.OcrCaptureActivity"
+        <activity android:name="com.iis.mobimanagercocacolaoffline.ocr.OcrCaptureActivity"
             android:label="Ocr scan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name="com.iis.mobimanagercocacola.activity.NotificationActivity"
+            android:name="com.iis.mobimanagercocacolaoffline.activity.NotificationActivity"
             android:theme="@style/AppTheme.sidebarSupportTheme" />
         <activity
-            android:name="com.iis.mobimanagercocacola.activity.MainActivity"
+            android:name="com.iis.mobimanagercocacolaoffline.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.iis.mobimanagercocacola.activity.ChatActivity"
+            android:name="com.iis.mobimanagercocacolaoffline.activity.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
 
         <receiver
-            android:name="com.iis.mobimanagercocacola.receiver.BootReceiver"
+            android:name="com.iis.mobimanagercocacolaoffline.receiver.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -139,21 +139,21 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.iis.mobimanagercocacola.receiver.AlarmManagerReceiver"
+            android:name="com.iis.mobimanagercocacolaoffline.receiver.AlarmManagerReceiver"
             android:enabled="true"
             android:exported="true" />
 
         <service
-            android:name="com.iis.mobimanagercocacola.service.LocationJobService"
+            android:name="com.iis.mobimanagercocacolaoffline.service.LocationJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="com.iis.mobimanagercocacola.service.MDMStatusService"
+            android:name="com.iis.mobimanagercocacolaoffline.service.MDMStatusService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="com.iis.mobimanagercocacola.service.DataUsageReportingService"
+            android:name="com.iis.mobimanagercocacolaoffline.service.DataUsageReportingService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="com.iis.mobimanagercocacola.service.AppMessagingService"
+            android:name="com.iis.mobimanagercocacolaoffline.service.AppMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -161,7 +161,7 @@
             </intent-filter>
         </service>
         <service
-            android:name="com.iis.mobimanagercocacola.service.AppService"
+            android:name="com.iis.mobimanagercocacolaoffline.service.AppService"
             android:enabled="true"
             android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- <receiver -->
         <!-- android:name=".receiver.AppBroadcastReceiver" -->
@@ -172,7 +172,7 @@
         <!-- </intent-filter> -->
         <!-- </receiver> -->
         <receiver
-            android:name="com.iis.mobimanagercocacola.utils.DeviceAdminHelper"
+            android:name="com.iis.mobimanagercocacolaoffline.utils.DeviceAdminHelper"
             android:description="@string/sample_device_admin_description"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -186,7 +186,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.iis.mobimanagercocacola.receiver.AppBroadcastReceiver"
+            android:name="com.iis.mobimanagercocacolaoffline.receiver.AppBroadcastReceiver"
             android:enabled="true"
             android:exported="true" />
     </application>
