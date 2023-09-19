@@ -1,0 +1,6 @@
+package com.iis.mobimanagercocacola.utils;
+
+import androidx.core.content.FileProvider;
+
+public class GenericFileProvider extends FileProvider {
+}

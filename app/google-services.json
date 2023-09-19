@@ -242,7 +242,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:917705824581:android:8af2a1955761d95338862c",
         "android_client_info": {
-          "package_name": "ccom.iis.mobimanagercedp"
+          "package_name": "com.iis.mobimanagercocacola"
         }
       },
       "oauth_client": [
@@ -300,7 +300,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:917705824581:android:ed6a89362bf8b90b38862c",
         "android_client_info": {
-          "package_name": "com.iis.mobimanagercedp"
+          "package_name": "com.iis.mobimanagercocacola"
         }
       },
       "oauth_client": [
