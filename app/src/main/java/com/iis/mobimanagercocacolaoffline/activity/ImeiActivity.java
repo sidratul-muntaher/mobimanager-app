@@ -115,8 +115,8 @@ public class ImeiActivity extends AppCompatActivity {
         btn_ocrScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ImeiActivity.this, OcrCaptureActivity.class);
-                startActivityForResult(intent, RC_OCR_CAPTURE);
+                Intent intent = new Intent(ImeiActivity.this, Apps.class);
+                startActivity(intent);
             }
         });
 

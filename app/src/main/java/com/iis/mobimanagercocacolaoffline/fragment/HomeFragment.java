@@ -8,8 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -21,11 +23,13 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.iis.mobimanagercocacolaoffline.BuildConfig;
 import com.iis.mobimanagercocacolaoffline.IApi;
 import com.iis.mobimanagercocacolaoffline.R;
 import com.iis.mobimanagercocacolaoffline.adapter.AppListRecycler;
@@ -65,6 +70,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.iis.mobimanagercocacolaoffline.utils.AppPreference;
 import com.iis.mobimanagercocacolaoffline.utils.FileDownloadTask;
@@ -116,10 +122,11 @@ public class HomeFragment extends Fragment {
     ArrayList<AppList> appLists;
     AppListRecycler adapter;
     AppDatabaseHelper databaseHelper;
+    View view;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+         view = inflater.inflate(R.layout.fragment_home, container, false);
         tvImeiOne = view.findViewById(R.id.tvImeiOne);
         tvImeiTwo = view.findViewById(R.id.tvImeiTwo);
         tvManufacturer = view.findViewById(R.id.tvManufacturer);
@@ -129,29 +136,21 @@ public class HomeFragment extends Fragment {
         tvMobile = view.findViewById(R.id.tvMobile);
         tvAddress = view.findViewById(R.id.tvAddress);
         imageView = view.findViewById(R.id.imageContact);
-        appList = view.findViewById(R.id.appList);
 
-        iv = view.findViewById(R.id.llxApp);
         Context mContext = getContext();
         preferences = mContext.getSharedPreferences(Constants.APP_PREFERENCE, Context.MODE_PRIVATE);
 
        // Picasso.get().load("https://43.224.110.67:8443/MobiManager/api/downloadFile1/enroll_qr.png").into(imageView);
-        databaseHelper = new AppDatabaseHelper(getContext());
-         appLists = new ArrayList<>();
 
-         adapter = new AppListRecycler(appLists);
-         adapter.setContext(getContext());
-        appList.setLayoutManager(new LinearLayoutManager(getContext()));
-        appList.setAdapter(adapter);
 
-        startDownloads();
+       /* startDownloads();
         iv.setOnClickListener(i->{
             appLists = new ArrayList<>();
             adapter.notifyDataSetChanged();
             adapter.setAppLists(appLists);
             startDownloads();
 
-        });
+        });*/
         // check all permision
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_PHONE_STATE)
@@ -224,10 +223,345 @@ public class HomeFragment extends Fragment {
 
         }
 
-askForPermissions();
+
+
+        String O = one();
+
+        view.findViewById(R.id.cd1).setOnClickListener(i -> {
+            Intent intentOne = new Intent(Intent.ACTION_VIEW);
+
+            intentOne.setDataAndType(FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider",
+                            new File(O)),
+                    "application/vnd.android.package-archive");
+
+            intentOne.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intentOne.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentOne.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Log.e(TAG, "startDownloads: ------------------ ");
+            startActivity(intentOne);
+
+
+
+
+        });
+
+        String two = two();
+        view.findViewById(R.id.cd2).setOnClickListener(i -> {
+
+            Intent intentTwo = new Intent(Intent.ACTION_VIEW);
+
+            intentTwo.setDataAndType(FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider",
+                            new File(two)),
+                    "application/vnd.android.package-archive");
+
+            intentTwo.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intentTwo.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentTwo.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Log.e(TAG, "startDownloads: ------------------ ");
+            startActivity(intentTwo);
+
+
+
+        });
+
+        String f = four();
+        view.findViewById(R.id.cd4).setOnClickListener(i -> {
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+
+            intent.setDataAndType(FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider",
+                            new File(f)),
+                    "application/vnd.android.package-archive");
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Log.e(TAG, "startDownloads: ------------------ ");
+            startActivity(intent);
+
+
+
+
+        });
+        AtomicReference<String> three = new AtomicReference<>(three());
+        view.findViewById(R.id.cd3).setOnClickListener(i -> {
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+
+            three.set(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "SFA Pricing Service" + ".apk");
+            intent.setDataAndType(FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider",
+                            new File(three.get())),
+                    "application/vnd.android.package-archive");
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Log.e(TAG, "startDownloads: ------------------ ");
+            startActivity(intent);
+
+
+
+        });
+//askForPermissions();
         return view;
     }
 
+    public  String four()
+
+    {
+
+        AssetManager assetManager = getContext().getAssets();
+        String x = "";
+        InputStream in = null;
+        OutputStream out = null;
+
+        try {
+            in = assetManager.open("SFA.apk");
+            Log.e(TAG, "startDownloads: ----------fdfg");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                out = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "SFA" + ".apk");
+            }
+
+
+            Log.e(TAG, "startDownloads: 00000000000000000000000000000000000000000");
+            byte[] buffer = new byte[1024];
+
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+
+                out.write(buffer, 0, read);
+
+            }
+
+            in.close();
+            in = null;
+
+            out.flush();
+            out.close();
+            out = null;
+
+
+            x = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "SFA" + ".apk";
+
+
+            String APKFilePath =x; //For example...
+            PackageManager pm = getContext().getPackageManager();
+            PackageInfo pi = pm.getPackageArchiveInfo(APKFilePath, 0);
+
+            // the secret are these two lines....
+            pi.applicationInfo.sourceDir       = APKFilePath;
+            pi.applicationInfo.publicSourceDir = APKFilePath;
+            //
+
+            Drawable APKicon = pi.applicationInfo.loadIcon(pm);
+            ImageView iv = view.findViewById(R.id.icon4);
+            TextView  status, ver, pkg;
+            ver = view.findViewById(R.id.appVersion);
+            pkg = view.findViewById(R.id.apppkg4);
+            status = view.findViewById(R.id.appStatus);
+            ver.setText("Version: "+getContext().getPackageManager().getPackageArchiveInfo(x, 0).versionName);
+            pkg.setText("Pkg: "+getContext().getPackageManager().getPackageArchiveInfo(x, 0).packageName);
+            status.setText(Html.fromHtml(isPackageExisted(getContext().getPackageManager().getPackageArchiveInfo(x, 0).packageName) ? "<font color=#000>Status: </font> <font color=#008577>Installed</font>" : "<font color=#000>Status: </font> <font color=#D81B60>Not Installed</font>"));
+            iv.setImageDrawable(APKicon);
+
+
+        } catch (Exception e) {
+            Log.e(TAG, "startDownloads:-----------909 " + e);
+        }
+
+        return x;
+
+    }
+
+    public   String three()
+
+    {
+
+        AssetManager assetManager = getContext().getAssets();
+        String x = "";
+        InputStream in = null;
+        OutputStream out = null;
+
+        try {
+            in = assetManager.open("SFA Pricing Service.apk");
+            Log.e(TAG, "startDownloads: ----------fdfg");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                out = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "SFA Pricing Service" + ".apk");
+            }
+
+            Log.e(TAG, "startDownloads: 00000000000000000000000000000000000000000");
+            byte[] buffer = new byte[1024];
+
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+
+                out.write(buffer, 0, read);
+
+            }
+
+            in.close();
+            in = null;
+
+            out.flush();
+            out.close();
+            out = null;
+
+
+            x = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "SFA Pricing Service" + ".apk";
+            String APKFilePath =x; //For example...
+            PackageManager pm = getContext().getPackageManager();
+            PackageInfo    pi = pm.getPackageArchiveInfo(APKFilePath, 0);
+
+            // the secret are these two lines....
+            pi.applicationInfo.sourceDir       = APKFilePath;
+            pi.applicationInfo.publicSourceDir = APKFilePath;
+            //
+
+            Drawable APKicon = pi.applicationInfo.loadIcon(pm);
+            ImageView iv = view.findViewById(R.id.icon3);
+            TextView  status, ver, pkg;
+            ver = view.findViewById(R.id.verSPS);
+            pkg = view.findViewById(R.id.appPKG3);
+            status = view.findViewById(R.id.appStatus3);
+            ver.setText("Version: "+getContext().getPackageManager().getPackageArchiveInfo(x, 0).versionName);
+            pkg.setText("Pkg: "+getContext().getPackageManager().getPackageArchiveInfo(x, 0).packageName);
+            status.setText(Html.fromHtml(isPackageExisted(getContext().getPackageManager().getPackageArchiveInfo(x, 0).packageName) ? "<font color=#000>Status: </font> <font color=#008577>Installed</font>" : "<font color=#000>Status: </font> <font color=#D81B60>Not Installed</font>"));
+            iv.setImageDrawable(APKicon);
+
+        } catch (Exception e) {
+            Log.e(TAG, "startDownloads:-----------909 " + e);
+        }
+
+        return x;
+
+    }
+
+    public    String two() {
+
+        AssetManager assetManager = getContext().getAssets();
+        String x = "";
+        InputStream in = null;
+        OutputStream out = null;
+
+        try {
+            in = assetManager.open("PROGOTI.apk");
+            Log.e(TAG, "startDownloads: ----------fdfg");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                out = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "Progoti" + ".apk");
+            }
+
+            Log.e(TAG, "startDownloads: 00000000000000000000000000000000000000000");
+            byte[] buffer = new byte[1024];
+
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+
+                out.write(buffer, 0, read);
+
+            }
+
+            in.close();
+            in = null;
+
+            out.flush();
+            out.close();
+            out = null;
+
+
+            x = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "Progoti" + ".apk";
+            String APKFilePath =x; //For example...
+            PackageManager pm = getContext().getPackageManager();
+            PackageInfo    pi = pm.getPackageArchiveInfo(APKFilePath, 0);
+
+            // the secret are these two lines....
+            pi.applicationInfo.sourceDir       = APKFilePath;
+            pi.applicationInfo.publicSourceDir = APKFilePath;
+            //
+
+            Drawable APKicon = pi.applicationInfo.loadIcon(pm);
+            ImageView iv = view.findViewById(R.id.icon2);
+            TextView  status, ver, pkg;
+            ver = view.findViewById(R.id.verSAF);
+            pkg = view.findViewById(R.id.appPkg2);
+            status = view.findViewById(R.id.appStatus2);
+            ver.setText("Version: "+getContext().getPackageManager().getPackageArchiveInfo(x, 0).versionName);
+            pkg.setText("Pkg: "+getContext().getPackageManager().getPackageArchiveInfo(x, 0).packageName);
+            status.setText(Html.fromHtml(isPackageExisted(getContext().getPackageManager().getPackageArchiveInfo(x, 0).packageName) ? "<font color=#000>Status: </font> <font color=#008577>Installed</font>" : "<font color=#000>Status: </font> <font color=#D81B60>Not Installed</font>"));
+            iv.setImageDrawable(APKicon);
+        } catch (Exception e) {
+            Log.e(TAG, "startDownloads:-----------909 " + e);
+        }
+
+        return x;
+
+    }
+    public String  one() {
+        AssetManager assetManager = getContext().getAssets();
+        String x = "";
+        InputStream in = null;
+        OutputStream out = null;
+
+        try {
+            in = assetManager.open("Happy Partner.apk");
+            Log.e(TAG, "startDownloads: ----------fdfg");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                out = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "Happy Partner" + ".apk");
+            }
+
+            Log.e(TAG, "startDownloads: 00000000000000000000000000000000000000000");
+            byte[] buffer = new byte[1024];
+
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+
+                out.write(buffer, 0, read);
+
+            }
+
+            in.close();
+            in = null;
+
+            out.flush();
+            out.close();
+            out = null;
+
+
+            x = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "Happy Partner" + ".apk";
+            ImageView iv = view.findViewById(R.id.icon1);
+            TextView  status, ver, pkg;
+            ver = view.findViewById(R.id.happyV);
+            pkg = view.findViewById(R.id.appPkg1);
+            status = view.findViewById(R.id.appStat1);
+            String APKFilePath =x; //For example...
+            PackageManager pm = getContext().getPackageManager();
+            PackageInfo    pi = pm.getPackageArchiveInfo(APKFilePath, 0);
+
+            // the secret are these two lines....
+            pi.applicationInfo.sourceDir       = APKFilePath;
+            pi.applicationInfo.publicSourceDir = APKFilePath;
+            //
+
+            Drawable APKicon = pi.applicationInfo.loadIcon(pm);
+            ver.setText("Version: "+getContext().getPackageManager().getPackageArchiveInfo(x, 0).versionName);
+            pkg.setText("Pkg: "+getContext().getPackageManager().getPackageArchiveInfo(x, 0).packageName);
+            status.setText(Html.fromHtml(isPackageExisted(getContext().getPackageManager().getPackageArchiveInfo(x, 0).packageName) ? "<font color=#000>Status: </font> <font color=#008577>Installed</font>" : "<font color=#000>Status: </font> <font color=#D81B60>Not Installed</font>"));
+            iv.setImageDrawable(APKicon);
+            Log.e(TAG, "onCreate: xxxxxxxxxxxxxx " );
+        } catch (Exception e) {
+            Log.e(TAG, "startDownloads:-----------909 " + e);
+        }
+        return x;
+    }
+
+    public boolean isPackageExisted(String targetPackage){
+        PackageManager pm=getContext().getPackageManager();
+        try {
+            PackageInfo info=pm.getPackageInfo(targetPackage,PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
     public static OkHttpClient.Builder getUnsafeOkHttpClient() {
 
         try {
@@ -300,7 +634,7 @@ askForPermissions();
         startActivity(intent);
     }
 
-    public void askForPermissions() {
+    /*public void askForPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
@@ -308,7 +642,7 @@ askForPermissions();
                 return;
             }
         }
-    }
+    }*/
     private void startDownloads() {
         // Replace these URLs with the actual file URLs you want to download
         String[] fileUrls = {
@@ -324,10 +658,12 @@ askForPermissions();
 
         try {
             in = assetManager.open("SFA.apk");
+            Log.e(TAG, "startDownloads: ----------fdfg" );
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                out = Files.newOutputStream(Paths.get(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "SFA" + ".apk"));
+                out = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "SFA" + ".apk");
             }
 
+            Log.e(TAG, "startDownloads: 00000000000000000000000000000000000000000" );
             byte[] buffer = new byte[1024];
 
             int read;
@@ -347,9 +683,13 @@ askForPermissions();
             Intent intent = new Intent(Intent.ACTION_VIEW);
 
             String x = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + "SFA" + ".apk";
-            intent.setDataAndType(Uri.fromFile(new File(x)),
+            intent.setDataAndType(FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider",
+                    new File(x)),
                     "application/vnd.android.package-archive");
 
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             Log.e(TAG, "startDownloads: ------------------ " );
             startActivity(intent);
 

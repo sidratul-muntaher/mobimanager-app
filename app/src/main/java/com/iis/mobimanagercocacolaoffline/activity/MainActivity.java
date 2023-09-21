@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         requestBatteryOptimizationPermission();
 
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
             // Permission is already granted, you can proceed with your operations.
         } else {
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.MANAGE_EXTERNAL_STORAGE},
                     909);
-        }
+        }*/
 
 
 //        httpsVolleyRequest("https://43.224.110.67:8443/cedpmdm/api/publish-plan");
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //                    pendingIntent);
 ////
 ////            Toast.makeText(this, "Alarm will set in " + intervalSec + " seconds",
-////                    Toast.LENGTH_LONG).show();
+////                    Toast.LENGTH_LONserG).show();
 //
 ////            alarmManager.cancel(pendingIntent);
 //        }
