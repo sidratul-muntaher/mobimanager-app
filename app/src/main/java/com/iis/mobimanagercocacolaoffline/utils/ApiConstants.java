@@ -9,7 +9,7 @@ public class ApiConstants {
     //for walton-mobimanager https
     public static final String BASE_HTTPS_URL = "https://43.224.110.67:8443";
     private static final String GET_EMPLOYEE_INFO = "/MobiManager/api/get-employee/";
-    private static final String GET_SAVE_LOCATION_INFO = "/MobiManager/api/save-location-update";
+    private static final String GET_SAVE_LOCATION_INFO = "/MobiManager/api/save-location";
     private static final String STATUS_INFO_API = "/MobiManager/api/update-device-status/";
     private static final String TOKEN_API = "/MobiManager/api/save-token";
     private static final String DATA_USES_API = "/MobiManager/api/save-data-usage";
